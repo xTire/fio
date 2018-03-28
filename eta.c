@@ -663,7 +663,10 @@ void print_thread_status(void)
 	struct jobs_eta *je;
 	size_t size;
 
-	je = get_jobs_eta(false, &size);
+	if (is_extra_tool)
+		je = get_jobs_eta(true, &size);
+	else 
+		je = get_jobs_eta(false, &size);
 	if (je)
 		display_thread_status(je);
 

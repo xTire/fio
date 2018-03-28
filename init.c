@@ -53,6 +53,7 @@ static char **job_sections;
 static int nr_job_sections;
 
 int exitall_on_terminate = 0;
+int is_extra_tool = 0;
 int output_format = FIO_OUTPUT_NORMAL;
 int eta_print = FIO_ETA_AUTO;
 unsigned int eta_interval_msec = 1000;
@@ -284,6 +285,11 @@ static struct option l_opts[FIO_NR_OPTIONS] = {
 		.name		= (char *) "aux-path",
 		.has_arg	= required_argument,
 		.val		= 'K',
+	},
+	{
+		.name 		= (char *) "extra-invoke",
+		.has_arg 	= no_argument,
+		.val		= 'A',
 	},
 	{
 		.name		= NULL,
@@ -2138,6 +2144,8 @@ static void usage(const char *name)
 {
 	printf("%s\n", fio_version_string);
 	printf("%s [options] [job options] <job file(s)>\n", name);
+	printf("  --extra-invoke\tEnable stdout print while fio as a extra tool\n"
+			" called from another programming language, JAVA etc.\n");
 	printf("  --debug=options\tEnable debug logging. May be one/more of:\n");
 	show_debug_categories();
 	printf("  --parse-only\t\tParse options only, don't start any IO\n");
@@ -2852,6 +2860,9 @@ int parse_cmd_line(int argc, char *argv[], int client_type)
 				exit_val = 1;
 			}
 			trigger_timeout /= 1000000;
+			break;
+		case 'A':
+			is_extra_tool = 1;
 			break;
 		case '?':
 			log_err("%s: unrecognized option '%s'\n", argv[0],

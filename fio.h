@@ -505,6 +505,7 @@ extern int append_terse_output;
 extern int temp_stall_ts;
 extern uintptr_t page_mask, page_size;
 extern int read_only;
+extern int is_extra_tool;
 extern int eta_print;
 extern int eta_new_line;
 extern unsigned int eta_interval_msec;
